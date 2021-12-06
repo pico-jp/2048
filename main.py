@@ -49,6 +49,13 @@ def draw(board, size_tile):
                 text_rect = text.get_rect(center=(pos_x + size_tile * 0.5, pos_y + size_tile * 0.5))
                 screen.blit(text, text_rect)
 
+def key_pressed(board):
+    size_board = len(board)
+    for i in range(size_board):
+        board[i] = slide(board[i])
+    board = add_number(board)    
+    return board
+
 size_board = 4
 color_board = (255, 255, 255)
 color_tile = (150, 150, 150)
@@ -74,6 +81,12 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                board = key_pressed(board)
+
     draw(board, size_tile)
     pygame.display.update()
 
