@@ -46,7 +46,8 @@ def draw(board, size_tile):
             if tile != 0:
                 font = pygame.font.SysFont(None, size_tile // 2)
                 text = font.render(str(tile), True, color_num)
-                screen.blit(text, (pos_x + size_tile * 0.25, pos_y + size_tile * 0.25))
+                text_rect = text.get_rect(center=(pos_x + size_tile * 0.5, pos_y + size_tile * 0.5))
+                screen.blit(text, text_rect)
 
 size_board = 4
 color_board = (255, 255, 255)
