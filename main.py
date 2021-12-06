@@ -34,6 +34,22 @@ def slide(row):
     array = [0] * missing + array
     return array
 
+def combine(row):
+    size_board = len(row)
+    for j in reversed(range(1, size_board)):
+        a = row[j]
+        b = row[j - 1]
+        if a == b:
+            row[j] = a + b
+            row[j - 1] = 0
+    return row
+
+def operate(row):
+    row = slide(row)
+    row = combine(row)
+    row = slide(row)
+    return row
+
 def draw(board, size_tile):
     size_board = len(board)
 
@@ -52,7 +68,7 @@ def draw(board, size_tile):
 def key_pressed(board):
     size_board = len(board)
     for i in range(size_board):
-        board[i] = slide(board[i])
+        board[i] = operate(board[i])
     board = add_number(board)    
     return board
 
@@ -63,7 +79,14 @@ color_num = (0, 0, 255)
 color_grid = (0, 0, 0)
 size_tile = 100
 
-print(slide([2, 2, 0, 4]))
+print('slide', slide([0, 2, 0, 2]))
+print('combine', combine([2, 2, 2, 2]))
+print('combine', combine([2, 4, 2, 2]))
+
+print('operate', operate([2, 2, 2, 2]))  # 0044
+print('operate', operate([2, 4, 2, 2]))  # 0244
+print('operate', operate([0, 2, 2, 4]))  # 0044
+
 board = setup(size_board = size_board)
 
 print_as_np_array(board)
