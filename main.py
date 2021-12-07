@@ -1,6 +1,6 @@
-import numpy as np
-from random import randint, random
 from copy import deepcopy
+from random import randint, random
+import numpy as np
 import pygame
 from pygame.locals import *
 
@@ -54,12 +54,11 @@ def operate(row):
 
 def draw(board, size_tile):
     size_board = len(board)
-
     for i in range(size_board):
         for j in range(size_board):
             pos_x = j * size_tile
             pos_y = i * size_tile
-            pygame.draw.rect(screen, color_grid, Rect(pos_x, pos_y, pos_x + size_tile, pos_y + size_tile), 2)
+            pygame.draw.rect(screen, color_grid, Rect(pos_x, pos_y, pos_x + size_tile, pos_y + size_tile), 10)
             tile = board[i][j]
             if tile != 0:
                 font = pygame.font.SysFont(None, size_tile // 2)
@@ -136,10 +135,10 @@ def key_pressed(board):
     return board
 
 size_board = 4
-color_board = (255, 255, 255)
+color_board = (205, 191, 180)
 color_tile = (150, 150, 150)
-color_num = (0, 0, 255)
-color_grid = (0, 0, 0)
+color_num = (118, 110, 101)
+color_grid = (188, 172, 159)
 size_tile = 100
 score = 0
 
