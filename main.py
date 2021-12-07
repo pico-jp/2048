@@ -52,12 +52,6 @@ def operate(row):
     row = slide(row)
     return row
 
-# def is_any_difference(source, target):
-#     if source == target:
-#         return False
-#     else:
-#         return True
-
 def draw(board, size_tile):
     size_board = len(board)
 
@@ -83,6 +77,15 @@ def transpose(board):
     board = [list(x) for x in zip(*board)]
     return board
 
+def is_game_over(board):
+    size_board = len(board)
+    for i in range(size_board):
+        if 0 in board[i]: return False
+        for j in range(size_board):
+            if i != size_board - 1 and board[i][j] == board[i + 1][j]: return False
+            if j != size_board - 1 and board[i][j] == board[i][j + 1]: return False
+    return True
+
 def key_pressed(board):
     size_board = len(board)
     board_past = deepcopy(board)
@@ -91,14 +94,18 @@ def key_pressed(board):
     played = True
 
     if event.key == pygame.K_RIGHT:
+        key = 'R'
         pass
     elif event.key == pygame.K_LEFT:
+        key = 'L'
         board = flip(board)
         flipped = True
     elif event.key == pygame.K_DOWN:
+        key = 'D'
         board = transpose(board)
         transposed = True
     elif event.key == pygame.K_UP:
+        key = 'U'
         board = transpose(board)
         board = flip(board)
         transposed = True
@@ -110,7 +117,8 @@ def key_pressed(board):
     if played:
         for i in range(size_board):
             board[i] = operate(board[i])
-        
+        print(f'key = {key}, score = {score}')
+
         if flipped:
             board = flip(board)
 
@@ -120,6 +128,10 @@ def key_pressed(board):
         if board != board_past:
             board = add_number(board)
             print_as_np_array(board)
+
+        if is_game_over(board):
+            print('GAME OVER')
+            exit()
 
     return board
 
@@ -131,19 +143,7 @@ color_grid = (0, 0, 0)
 size_tile = 100
 score = 0
 
-# print('slide', slide([0, 2, 0, 2]))
-# print('combine', combine([2, 2, 2, 2]))
-# print('combine', combine([2, 4, 2, 2]))
-
-# print('operate', operate([2, 2, 2, 2]))  # 0044
-# print('operate', operate([2, 4, 2, 2]))  # 0244
-# print('operate', operate([0, 2, 2, 4]))  # 0044
-
-# print('compare', [[1,2,3,4], [1,2,3,4]] == [[1,2,3,4], [1,2,3,4]])
-# print('compare', [[1,2,3,4], [1,2,3,4]] == [[1,2,3,3], [1,2,3,4]])
-
 board = setup(size_board = size_board)
-
 print_as_np_array(board)
 
 
@@ -162,7 +162,6 @@ while running:
 
         if event.type == pygame.KEYDOWN:
             board = key_pressed(board)
-            pygame.display.set_caption(f'2048 (Score: {score})')
 
     draw(board, size_tile)
     pygame.display.update()
