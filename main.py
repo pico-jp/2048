@@ -35,6 +35,7 @@ def slide(row):
     return array
 
 def combine(row):
+    global score
     size_board = len(row)
     for j in reversed(range(1, size_board)):
         a = row[j]
@@ -42,6 +43,7 @@ def combine(row):
         if a == b:
             row[j] = a + b
             row[j - 1] = 0
+            score += row[j]
     return row
 
 def operate(row):
@@ -127,17 +129,18 @@ color_tile = (150, 150, 150)
 color_num = (0, 0, 255)
 color_grid = (0, 0, 0)
 size_tile = 100
+score = 0
 
-print('slide', slide([0, 2, 0, 2]))
-print('combine', combine([2, 2, 2, 2]))
-print('combine', combine([2, 4, 2, 2]))
+# print('slide', slide([0, 2, 0, 2]))
+# print('combine', combine([2, 2, 2, 2]))
+# print('combine', combine([2, 4, 2, 2]))
 
-print('operate', operate([2, 2, 2, 2]))  # 0044
-print('operate', operate([2, 4, 2, 2]))  # 0244
-print('operate', operate([0, 2, 2, 4]))  # 0044
+# print('operate', operate([2, 2, 2, 2]))  # 0044
+# print('operate', operate([2, 4, 2, 2]))  # 0244
+# print('operate', operate([0, 2, 2, 4]))  # 0044
 
-print('compare', [[1,2,3,4], [1,2,3,4]] == [[1,2,3,4], [1,2,3,4]])
-print('compare', [[1,2,3,4], [1,2,3,4]] == [[1,2,3,3], [1,2,3,4]])
+# print('compare', [[1,2,3,4], [1,2,3,4]] == [[1,2,3,4], [1,2,3,4]])
+# print('compare', [[1,2,3,4], [1,2,3,4]] == [[1,2,3,3], [1,2,3,4]])
 
 board = setup(size_board = size_board)
 
@@ -159,6 +162,7 @@ while running:
 
         if event.type == pygame.KEYDOWN:
             board = key_pressed(board)
+            pygame.display.set_caption(f'2048 (Score: {score})')
 
     draw(board, size_tile)
     pygame.display.update()
