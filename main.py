@@ -50,6 +50,12 @@ def operate(row):
     row = slide(row)
     return row
 
+# def is_any_difference(source, target):
+#     if source == target:
+#         return False
+#     else:
+#         return True
+
 def draw(board, size_tile):
     size_board = len(board)
 
@@ -65,11 +71,33 @@ def draw(board, size_tile):
                 text_rect = text.get_rect(center=(pos_x + size_tile * 0.5, pos_y + size_tile * 0.5))
                 screen.blit(text, text_rect)
 
-def key_pressed(board):
+def flip(board):
     size_board = len(board)
     for i in range(size_board):
+        board[i] = board[i][::-1]
+    return board
+
+def key_pressed(board):
+    size_board = len(board)
+    board_past = deepcopy(board)
+    flipped = False
+
+    if event.key == pygame.K_RIGHT:
+        pass
+    if event.key == pygame.K_LEFT:
+        board = flip(board)
+        flipped = True
+
+    for i in range(size_board):
         board[i] = operate(board[i])
-    board = add_number(board)    
+    
+    if board != board_past:
+        board = add_number(board)
+        print_as_np_array(board)
+
+    if flipped:
+        board = flip(board)
+
     return board
 
 size_board = 4
@@ -86,6 +114,9 @@ print('combine', combine([2, 4, 2, 2]))
 print('operate', operate([2, 2, 2, 2]))  # 0044
 print('operate', operate([2, 4, 2, 2]))  # 0244
 print('operate', operate([0, 2, 2, 4]))  # 0044
+
+print('compare', [[1,2,3,4], [1,2,3,4]] == [[1,2,3,4], [1,2,3,4]])
+print('compare', [[1,2,3,4], [1,2,3,4]] == [[1,2,3,3], [1,2,3,4]])
 
 board = setup(size_board = size_board)
 
@@ -105,10 +136,10 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
+            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT or event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                 board = key_pressed(board)
+            # if event.key == pygame.K_SPACE:
 
     draw(board, size_tile)
     pygame.display.update()
