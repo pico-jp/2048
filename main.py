@@ -77,26 +77,47 @@ def flip(board):
         board[i] = board[i][::-1]
     return board
 
+def transpose(board):
+    board = [list(x) for x in zip(*board)]
+    return board
+
 def key_pressed(board):
     size_board = len(board)
     board_past = deepcopy(board)
     flipped = False
+    transposed = False
+    played = True
 
     if event.key == pygame.K_RIGHT:
         pass
-    if event.key == pygame.K_LEFT:
+    elif event.key == pygame.K_LEFT:
         board = flip(board)
         flipped = True
-
-    for i in range(size_board):
-        board[i] = operate(board[i])
-    
-    if board != board_past:
-        board = add_number(board)
-        print_as_np_array(board)
-
-    if flipped:
+    elif event.key == pygame.K_DOWN:
+        board = transpose(board)
+        transposed = True
+    elif event.key == pygame.K_UP:
+        board = transpose(board)
         board = flip(board)
+        transposed = True
+        flipped = True
+        pass
+    else:
+        played = False
+
+    if played:
+        for i in range(size_board):
+            board[i] = operate(board[i])
+        
+        if flipped:
+            board = flip(board)
+
+        if transposed:
+            board = transpose(board)
+
+        if board != board_past:
+            board = add_number(board)
+            print_as_np_array(board)
 
     return board
 
@@ -137,9 +158,7 @@ while running:
             running = False
 
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT or event.key == pygame.K_UP or event.key == pygame.K_DOWN:
-                board = key_pressed(board)
-            # if event.key == pygame.K_SPACE:
+            board = key_pressed(board)
 
     draw(board, size_tile)
     pygame.display.update()
