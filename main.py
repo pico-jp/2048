@@ -134,21 +134,23 @@ def key_pressed(board):
 
     return board
 
-size_board = 4
+# Main
 color_board = (205, 191, 180)
 color_tile = (150, 150, 150)
 color_num = (118, 110, 101)
 color_grid = (188, 172, 159)
+size_window_x = 400
+size_window_y = 400
 size_tile = 100
+size_board = 4
 score = 0
 
 board = setup(size_board = size_board)
 print_as_np_array(board)
 
-
 # Initialize pygame
 pygame.init()
-screen = pygame.display.set_mode((400, 400))
+screen = pygame.display.set_mode((size_window_x, size_window_y))
 pygame.display.set_caption('2048')
 
 # Game loop
@@ -158,11 +160,8 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
         if event.type == pygame.KEYDOWN:
             board = key_pressed(board)
 
     draw(board, size_tile)
     pygame.display.update()
-
-    
