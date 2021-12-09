@@ -1,11 +1,21 @@
 from copy import deepcopy
 from random import randint, random
-import numpy as np
 import pygame
 from pygame.locals import *
 
-def print_as_np_array(A):
-    print(np.array(A))
+def print_board(board):
+    size_board = len(board)
+    max_str_len = 0
+    for row in board:
+        temp = len(str(max(row)))
+        max_str_len = temp if temp > max_str_len else max_str_len
+    print('-' * ((max_str_len + 3) * size_board + 1))
+    for row in board:
+        temp = deepcopy(row)
+        temp = list(map(lambda x: str(x).rjust(max_str_len), temp))
+        temp = f'| {" | ".join(temp)} |'
+        print(temp)
+        print('-' * ((max_str_len + 3) * size_board + 1))
 
 def setup(size_board):
     board = [[0] * size_board for i in range(size_board)]
@@ -126,7 +136,7 @@ def key_pressed(board):
 
         if board != board_past:
             board = add_number(board)
-            print_as_np_array(board)
+            print_board(board)
 
         if is_game_over(board):
             print('GAME OVER')
@@ -146,7 +156,7 @@ size_board = 4
 score = 0
 
 board = setup(size_board = size_board)
-print_as_np_array(board)
+print_board(board)
 
 # Initialize pygame
 pygame.init()
