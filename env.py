@@ -149,7 +149,7 @@ class game2048():
                 self.done = True
 
         if self.observation_1d: return list(itertools.chain.from_iterable(self.board)), self.score_inc, self.done, self.num_step
-        return self.board, self.score_inc, self.done, self.num_step
+        return self.board, self.score_inc, self.done, self.score
 
     def config(self, goal=2048, observation_1d=True, verbose=False):
         self.goal = goal
@@ -171,7 +171,7 @@ if __name__ == '__main__':
             # print(observation, reward, done, info)
             if done:
                 # print(observation)
-                print(f'Episode finished after {t + 1} steps')
+                print(f'Episode finished after {t + 1} steps (max_tile: {max(list(itertools.chain.from_iterable(observation)))}, score: {info})')
                 break
 
 
