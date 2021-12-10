@@ -156,6 +156,9 @@ class game2048():
         self.observation_1d = observation_1d
         self.verbose = verbose
 
+    def close(self):
+        pass
+
 if __name__ == '__main__':
     env = game2048(size_board=4)
     env.config(goal=2048, observation_1d=False, verbose=False)
